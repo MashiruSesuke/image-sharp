@@ -9,3 +9,7 @@ https://sharp.pixelplumbing.com/install
 
 Also for `win` need to install package:
 `npm i @img/sharp-win32-x64`
+
+# Install
+
+Run `npm i`
