@@ -10,5 +10,6 @@
     "jpg": {
         "quality": 60,
         "progressive": true
-    }
+    },
+    "sizes": [300, 600, 900]
 }

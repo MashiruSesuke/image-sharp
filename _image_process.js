@@ -50,7 +50,7 @@ const add_folders = () => {
 
 /**
  * Convert file to needed formats
- * 
+ *
  * @param {String} file   file name with format (like 'test.png')
  */
 const convert_image = (file) => {
@@ -61,7 +61,7 @@ const convert_image = (file) => {
 
 /**
  * Convert file to webp
- * 
+ *
  * @param {String} file   file name with format (like 'test.png')
  */
 const convert_to_webp = (file) => {
@@ -75,13 +75,19 @@ const convert_to_webp = (file) => {
     sharp(needed_file_path)
       // https://sharp.pixelplumbing.com/api-output#webp
       .webp(params.webp)
-      .toFile(`${final_folder}/webp/${file_name}.webp`);
+      .toBuffer()
+      .then((data) => {
+        // prepare files for all sizes
+        params.sizes.forEach((size) => {
+          resize_image(data, file_name, 'webp', +size);
+        });
+      });
   }
 };
 
 /**
  * Convert file to avif
- * 
+ *
  * @param {String} file   file name with format (like 'test.png')
  */
 const convert_to_avif = (file) => {
@@ -92,13 +98,19 @@ const convert_to_avif = (file) => {
     sharp(needed_file_path)
       // https://sharp.pixelplumbing.com/api-output#avif
       .avif(params.avif)
-      .toFile(`${final_folder}/avif/${file_name}.avif`);
+      .toBuffer()
+      .then((data) => {
+        // prepare files for all sizes
+        params.sizes.forEach((size) => {
+          resize_image(data, file_name, 'avif', +size);
+        });
+      });
   }
 };
 
 /**
  * Convert file to jpg
- * 
+ *
  * @param {String} file   file name with format (like 'test.png')
  */
 const convert_to_jpg = (file) => {
@@ -109,6 +121,30 @@ const convert_to_jpg = (file) => {
     sharp(needed_file_path)
       // https://sharp.pixelplumbing.com/api-output#jpeg
       .jpeg(params.jpg)
-      .toFile(`${final_folder}/jpg/${file_name}.jpg`);
+      .toBuffer()
+      .then((data) => {
+        // prepare files for all sizes
+        params.sizes.forEach((size) => {
+          resize_image(data, file_name, 'jpg', +size);
+        });
+      });
+  }
+};
+
+/**
+ * Resize image to needed width
+ * 
+ * @param {String} file     image data
+ * @param {String} name     file name
+ * @param {String} format   needed format
+ * @param {Number} width    needed width
+ */
+const resize_image = (file, name, format, width) => {
+  if (file && name && format && width) {
+    sharp(file)
+      .resize(width)
+      .toFile(`${final_folder}/${format}/${name}-${width}.${format}`);
+  } else {
+    console.log('something missed in the `resize_image` func')
   }
 };
