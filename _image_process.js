@@ -3,10 +3,10 @@ const fs = require("fs");
 
 const params = require('./params.json');
 
-const images_folder = "./images/",
+const images_folder = "./images",
       final_folder = "./processed_images";
 
-fs.readdir(images_folder, (err, files) => {
+fs.readdir(`${images_folder}/`, (err, files) => {
   remove_files();
   add_folders();
   
@@ -23,6 +23,9 @@ const remove_files = () => {
 
 // https://stackoverflow.com/questions/21194934/how-to-create-a-directory-if-it-doesnt-exist-using-node-js
 const add_folders = () => {
+  if (!fs.existsSync(`${images_folder}`)){
+    fs.mkdirSync(`${images_folder}`);
+  }
   if (!fs.existsSync(`${final_folder}`)){
     fs.mkdirSync(`${final_folder}`);
   }
@@ -46,7 +49,7 @@ const convert_image = (file) => {
 
 const convert_to_webp = (name) => {
   if (name) {
-    const needed_file_path = `${images_folder}${name}`;
+    const needed_file_path = `${images_folder}/${name}`;
     const file_name = name.split('.')[0];
 
     sharp(needed_file_path)
@@ -58,7 +61,7 @@ const convert_to_webp = (name) => {
 
 const convert_to_avif = (name) => {
   if (name) {
-    const needed_file_path = `${images_folder}${name}`;
+    const needed_file_path = `${images_folder}/${name}`;
     const file_name = name.split('.')[0];
 
     sharp(needed_file_path)
@@ -70,7 +73,7 @@ const convert_to_avif = (name) => {
 
 const convert_to_jpg = (name) => {
   if (name) {
-    const needed_file_path = `${images_folder}${name}`;
+    const needed_file_path = `${images_folder}/${name}`;
     const file_name = name.split('.')[0];
 
     sharp(needed_file_path)
