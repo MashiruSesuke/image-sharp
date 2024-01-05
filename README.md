@@ -13,3 +13,11 @@ Also for `win` need to install package:
 # Install
 
 Run `npm i`
+
+# Params
+
+`params.json` supports:
+1. `webp` params from https://sharp.pixelplumbing.com/api-output#webp
+2. `avif` params from https://sharp.pixelplumbing.com/api-output#avif
+3. `jpeg` params from https://sharp.pixelplumbing.com/api-output#jpeg
+4. `sizes` array with needed sizes. Can be empty or deleted.

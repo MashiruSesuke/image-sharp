@@ -72,16 +72,23 @@ const convert_to_webp = (file) => {
     // needed file name without format
     const file_name = file.split(".")[0];
 
-    sharp(needed_file_path)
-      // https://sharp.pixelplumbing.com/api-output#webp
-      .webp(params.webp)
-      .toBuffer()
-      .then((data) => {
-        // prepare files for all sizes
-        params.sizes.forEach((size) => {
-          resize_image(data, file_name, 'webp', +size);
+    if (params.sizes?.length > 0) {
+      sharp(needed_file_path)
+        // https://sharp.pixelplumbing.com/api-output#webp
+        .webp(params.webp)
+        .toBuffer()
+        .then((data) => {
+          // prepare files for all sizes
+          params.sizes.forEach((size) => {
+            resize_image(data, file_name, "webp", +size);
+          });
         });
-      });
+    } else {
+      sharp(needed_file_path)
+        // https://sharp.pixelplumbing.com/api-output#webp
+        .webp(params.webp)
+        .toFile(`${final_folder}/webp/${file_name}-default.webp`);
+    }
   }
 };
 
@@ -95,16 +102,23 @@ const convert_to_avif = (file) => {
     const needed_file_path = `${images_folder}/${file}`;
     const file_name = file.split(".")[0];
 
-    sharp(needed_file_path)
-      // https://sharp.pixelplumbing.com/api-output#avif
-      .avif(params.avif)
-      .toBuffer()
-      .then((data) => {
-        // prepare files for all sizes
-        params.sizes.forEach((size) => {
-          resize_image(data, file_name, 'avif', +size);
+    if (params.sizes?.length > 0) {
+      sharp(needed_file_path)
+        // https://sharp.pixelplumbing.com/api-output#avif
+        .avif(params.avif)
+        .toBuffer()
+        .then((data) => {
+          // prepare files for all sizes
+          params.sizes.forEach((size) => {
+            resize_image(data, file_name, "avif", +size);
+          });
         });
-      });
+    } else {
+      sharp(needed_file_path)
+        // https://sharp.pixelplumbing.com/api-output#avif
+        .avif(params.avif)
+        .toFile(`${final_folder}/avif/${file_name}-default.avif`);
+    }
   }
 };
 
@@ -118,22 +132,29 @@ const convert_to_jpg = (file) => {
     const needed_file_path = `${images_folder}/${file}`;
     const file_name = file.split(".")[0];
 
-    sharp(needed_file_path)
-      // https://sharp.pixelplumbing.com/api-output#jpeg
-      .jpeg(params.jpg)
-      .toBuffer()
-      .then((data) => {
-        // prepare files for all sizes
-        params.sizes.forEach((size) => {
-          resize_image(data, file_name, 'jpg', +size);
+    if (params.sizes?.length > 0) {
+      sharp(needed_file_path)
+        // https://sharp.pixelplumbing.com/api-output#jpeg
+        .jpeg(params.jpg)
+        .toBuffer()
+        .then((data) => {
+          // prepare files for all sizes
+          params.sizes.forEach((size) => {
+            resize_image(data, file_name, "jpg", +size);
+          });
         });
-      });
+    } else {
+      sharp(needed_file_path)
+        // https://sharp.pixelplumbing.com/api-output#jpeg
+        .jpeg(params.jpg)
+        .toFile(`${final_folder}/jpg/${file_name}-default.jpg`);
+    }
   }
 };
 
 /**
  * Resize image to needed width
- * 
+ *
  * @param {String} file     image data
  * @param {String} name     file name
  * @param {String} format   needed format
@@ -145,6 +166,6 @@ const resize_image = (file, name, format, width) => {
       .resize(width)
       .toFile(`${final_folder}/${format}/${name}-${width}.${format}`);
   } else {
-    console.log('something missed in the `resize_image` func')
+    console.log("something missed in the `resize_image` func");
   }
 };
