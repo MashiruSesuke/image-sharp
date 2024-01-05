@@ -1,0 +1,14 @@
+{
+    "webp": {
+        "quality": 70,
+        "lossless": false
+    },
+    "avif": {
+        "quality": 70,
+        "lossless": false
+    },
+    "jpg": {
+        "quality": 60,
+        "progressive": true
+    }
+}
