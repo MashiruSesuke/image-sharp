@@ -1,15 +1,17 @@
 const sharp = require("sharp");
 const fs = require("fs");
 
-const params = require('./params.json');
+const params = require("./params.json");
 
 const images_folder = "./images",
-      final_folder = "./processed_images";
+  final_folder = "./processed_images";
 
 fs.readdir(`${images_folder}/`, (err, files) => {
+  // del old files and create all needed folders
   remove_files();
   add_folders();
-  
+
+  // read `images_folder`
   files.forEach((file) => {
     convert_image(file);
   });
@@ -23,34 +25,52 @@ const remove_files = () => {
 
 // https://stackoverflow.com/questions/21194934/how-to-create-a-directory-if-it-doesnt-exist-using-node-js
 const add_folders = () => {
-  if (!fs.existsSync(`${images_folder}`)){
+  // create `images` folder
+  if (!fs.existsSync(`${images_folder}`)) {
     fs.mkdirSync(`${images_folder}`);
   }
-  if (!fs.existsSync(`${final_folder}`)){
+  // create `processed_images` folder
+  if (!fs.existsSync(`${final_folder}`)) {
     fs.mkdirSync(`${final_folder}`);
   }
 
-  if (!fs.existsSync(`${final_folder}/webp`)){
+  // create `images/webp` folder
+  if (!fs.existsSync(`${final_folder}/webp`)) {
     fs.mkdirSync(`${final_folder}/webp`);
   }
-  if (!fs.existsSync(`${final_folder}/avif`)){
+  // create `images/avif` folder
+  if (!fs.existsSync(`${final_folder}/avif`)) {
     fs.mkdirSync(`${final_folder}/avif`);
   }
-  if (!fs.existsSync(`${final_folder}/jpg`)){
+  // create `images/jpg` folder
+  if (!fs.existsSync(`${final_folder}/jpg`)) {
     fs.mkdirSync(`${final_folder}/jpg`);
   }
-}
+};
 
+/**
+ * Convert file to needed formats
+ * 
+ * @param {String} file   file name with format (like 'test.png')
+ */
 const convert_image = (file) => {
   convert_to_webp(file);
   convert_to_avif(file);
   convert_to_jpg(file);
 };
 
-const convert_to_webp = (name) => {
-  if (name) {
-    const needed_file_path = `${images_folder}/${name}`;
-    const file_name = name.split('.')[0];
+/**
+ * Convert file to webp
+ * 
+ * @param {String} file   file name with format (like 'test.png')
+ */
+const convert_to_webp = (file) => {
+  if (file) {
+    // file path
+    const needed_file_path = `${images_folder}/${file}`;
+
+    // needed file name without format
+    const file_name = file.split(".")[0];
 
     sharp(needed_file_path)
       // https://sharp.pixelplumbing.com/api-output#webp
@@ -59,10 +79,15 @@ const convert_to_webp = (name) => {
   }
 };
 
-const convert_to_avif = (name) => {
-  if (name) {
-    const needed_file_path = `${images_folder}/${name}`;
-    const file_name = name.split('.')[0];
+/**
+ * Convert file to avif
+ * 
+ * @param {String} file   file name with format (like 'test.png')
+ */
+const convert_to_avif = (file) => {
+  if (file) {
+    const needed_file_path = `${images_folder}/${file}`;
+    const file_name = file.split(".")[0];
 
     sharp(needed_file_path)
       // https://sharp.pixelplumbing.com/api-output#avif
@@ -71,10 +96,15 @@ const convert_to_avif = (name) => {
   }
 };
 
-const convert_to_jpg = (name) => {
-  if (name) {
-    const needed_file_path = `${images_folder}/${name}`;
-    const file_name = name.split('.')[0];
+/**
+ * Convert file to jpg
+ * 
+ * @param {String} file   file name with format (like 'test.png')
+ */
+const convert_to_jpg = (file) => {
+  if (file) {
+    const needed_file_path = `${images_folder}/${file}`;
+    const file_name = file.split(".")[0];
 
     sharp(needed_file_path)
       // https://sharp.pixelplumbing.com/api-output#jpeg
