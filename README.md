@@ -21,3 +21,10 @@ Run `npm i`
 2. `avif` params from https://sharp.pixelplumbing.com/api-output#avif
 3. `jpeg` params from https://sharp.pixelplumbing.com/api-output#jpeg
 4. `sizes` array with needed sizes. Can be empty or deleted.
+
+# Example
+
+To run example, use `node _image_process.js example`.
+Then open `./example/index.html`.
+
+You can place your `example` image to the `./example/images/example.*`.

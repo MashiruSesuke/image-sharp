@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image test</title>
+
+    <style>
+        main {
+            display: flex;
+            flex-direction: column;
+        }
+
+        img {
+            max-width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1>Image test</h1>
+        <picture>
+            <source srcset="./processed_images/avif/example-300.avif" media="(max-width: 576px)" type="image/avif">
+            <source srcset="./processed_images/avif/example-600.avif" media="(max-width: 992px)" type="image/avif">
+            <source srcset="./processed_images/avif/example-900.avif" type="image/avif">
+            <source srcset="./processed_images/webp/example-300.webp" media="(max-width: 576px)" type="image/avif">
+            <source srcset="./processed_images/webp/example-600.webp" media="(max-width: 992px)" type="image/avif">
+            <source srcset="./processed_images/webp/example-900.webp" type="image/webp">
+            <source srcset="./processed_images/jpg/example-300.jpg" media="(max-width: 576px)">
+            <source srcset="./processed_images/jpg/example-600.jpg" media="(max-width: 992px)">
+            <source srcset="./processed_images/jpg/example-900.jpg">
+            <img src="./processed_images/jpg/example-900.jpg" alt="image srcset test" >
+        </picture>
+    </main>
+</body>
+
+</html>

@@ -1,10 +1,21 @@
 const sharp = require("sharp");
 const fs = require("fs");
+const { argv } = require('node:process');
 
 const params = require("./params.json");
 
-const images_folder = "./images",
+let images_folder = "./images",
   final_folder = "./processed_images";
+
+if (argv[2] && argv[2] === 'example') {
+  images_folder = "./example/images",
+  final_folder = "./example/processed_images";
+}
+
+// create `images` folder
+if (!fs.existsSync(`${images_folder}`)) {
+  fs.mkdirSync(`${images_folder}`);
+}
 
 fs.readdir(`${images_folder}/`, (err, files) => {
   // del old files and create all needed folders
@@ -25,10 +36,6 @@ const remove_files = () => {
 
 // https://stackoverflow.com/questions/21194934/how-to-create-a-directory-if-it-doesnt-exist-using-node-js
 const add_folders = () => {
-  // create `images` folder
-  if (!fs.existsSync(`${images_folder}`)) {
-    fs.mkdirSync(`${images_folder}`);
-  }
   // create `processed_images` folder
   if (!fs.existsSync(`${final_folder}`)) {
     fs.mkdirSync(`${final_folder}`);
