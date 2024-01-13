@@ -11,5 +11,5 @@
         "quality": 60,
         "progressive": true
     },
-    "sizes": [300, 600, 900]
+    "sizes": [300, 600, 1200, 900, 1800]
 }
