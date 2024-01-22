@@ -2,7 +2,7 @@ My work with `sharp`.
 
 To work you need to create `images` and `processed_images` inside your project folder.
 
-To run, use `node _image_process.js`.
+To run, use `node _image_process.js` or `npm run build`.
 
 Requare `Node-API v9 compatible runtime e.g. Node.js >= 18.17.0`:
 https://sharp.pixelplumbing.com/install
@@ -24,7 +24,7 @@ Run `npm i`
 
 # Example
 
-To run example, use `node _image_process.js example`.
+To run example, use `node _image_process.js example` or `npm run example`.
 Then open `./example/index.html`.
 
 You can place your `example` image to the `./example/images/example.*`.
