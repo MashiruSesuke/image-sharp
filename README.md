@@ -28,3 +28,8 @@ To run example, use `node _image_process.js example` or `npm run example`.
 Then open `./example/index.html`.
 
 You can place your `example` image to the `./example/images/example.*`.
+
+# Sizes
+
+Default:
+`"sizes": [300, 600, 1200, 1800, 3000]`.
