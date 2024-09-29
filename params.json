@@ -1,15 +1,15 @@
 {
     "webp": {
-        "quality": 70,
-        "lossless": false
+        "quality": 100,
+        "lossless": true
     },
     "avif": {
-        "quality": 70,
-        "lossless": false
+        "quality": 100,
+        "lossless": true
     },
     "jpg": {
-        "quality": 60,
+        "quality": 100,
         "progressive": true
     },
-    "sizes": [300, 600, 1200, 900, 1800]
+    "sizes": [300, 600, 1200, 1800, 3000]
 }
