@@ -40,19 +40,6 @@ const add_folders = () => {
   if (!fs.existsSync(`${final_folder}`)) {
     fs.mkdirSync(`${final_folder}`);
   }
-
-  // create `images/webp` folder
-  if (!fs.existsSync(`${final_folder}/webp`)) {
-    fs.mkdirSync(`${final_folder}/webp`);
-  }
-  // create `images/avif` folder
-  if (!fs.existsSync(`${final_folder}/avif`)) {
-    fs.mkdirSync(`${final_folder}/avif`);
-  }
-  // create `images/jpg` folder
-  if (!fs.existsSync(`${final_folder}/jpg`)) {
-    fs.mkdirSync(`${final_folder}/jpg`);
-  }
 };
 
 /**
@@ -171,9 +158,13 @@ const convert_to_jpg = (file) => {
  */
 const resize_image = (file, name, format, width) => {
   if (file && name && format && width) {
+    if (!fs.existsSync(`${final_folder}/${name}`)) {
+      fs.mkdirSync(`${final_folder}/${name}`);
+    }
+
     sharp(file)
       .resize(width)
-      .toFile(`${final_folder}/${format}/${name}-${width}.${format}`);
+      .toFile(`${final_folder}/${name}/${width}.${format}`);
   } else {
     console.log("something missed in the `resize_image` func");
   }
