@@ -21,6 +21,7 @@ Run `npm i`
 2. `avif` params from https://sharp.pixelplumbing.com/api-output#avif
 3. `jpeg` params from https://sharp.pixelplumbing.com/api-output#jpeg
 4. `sizes` array with needed sizes. Can be empty or deleted.
+5. `background` string from https://sharp.pixelplumbing.com/api-operation#flatten
 
 # Example
 
@@ -32,4 +33,5 @@ You can place your `example` image to the `./example/images/example.*`.
 # Sizes
 
 Default:
-`"sizes": [300, 600, 1200, 1800, 3000]`.
+`"sizes": [300, 600, 1200, 1800, 3000]`
+`"background: "#FFFFFF"`
