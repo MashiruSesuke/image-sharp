@@ -142,7 +142,7 @@ const convert_to_jpg = (file) => {
     if (params.sizes?.length > 0) {
       sharp(needed_file_path)
         // https://sharp.pixelplumbing.com/api-operation#flatten
-        // .flatten({ background: '#F2F4FF' })
+        .flatten({ background: params.background })
         // https://sharp.pixelplumbing.com/api-output#jpeg
         .jpeg(params.jpg)
         .toBuffer()

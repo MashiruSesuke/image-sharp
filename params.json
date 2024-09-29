@@ -11,5 +11,6 @@
         "quality": 100,
         "progressive": true
     },
-    "sizes": [300, 600, 1200, 1800, 3000]
+    "sizes": [300, 600, 1200, 1800, 3000],
+    "background": "#FFFFFF"
 }
