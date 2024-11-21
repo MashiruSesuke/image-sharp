@@ -30,8 +30,10 @@ Then open `./example/index.html`.
 
 You can place your `example` image to the `./example/images/example.*`.
 
-# Sizes
-
+# Params
+## Sized
 Default:
 `"sizes": [300, 600, 1200, 1800, 3000]`
+
+# Background
 `"background: "#FFFFFF"`
