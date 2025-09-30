@@ -18,14 +18,22 @@ if (!fs.existsSync(`${images_folder}`)) {
 }
 
 fs.readdir(`${images_folder}/`, (err, files) => {
+  console.log("Work in progres...");
+
   // del old files and create all needed folders
   remove_files();
   add_folders();
 
   // read `images_folder`
-  files.forEach((file) => {
-    convert_image(file);
-  });
+  const tasks = files.map((file) => convert_image(file));
+
+  Promise.all(tasks)
+    .then(() => {
+      console.log("Build successful");
+    })
+    .catch((error) => {
+      console.error("Build failed:", error);
+    });
 });
 
 // https://stackoverflow.com/questions/27072866/how-to-remove-all-files-from-directory-without-removing-directory-in-node-js
@@ -48,9 +56,11 @@ const add_folders = () => {
  * @param {String} file   file name with format (like 'test.png')
  */
 const convert_image = (file) => {
-  convert_to_webp(file);
-  convert_to_avif(file);
-  convert_to_jpg(file);
+  return Promise.all([
+    convert_to_webp(file),
+    convert_to_avif(file),
+    convert_to_jpg(file)
+  ]);
 };
 
 /**
@@ -58,31 +68,31 @@ const convert_image = (file) => {
  *
  * @param {String} file   file name with format (like 'test.png')
  */
-const convert_to_webp = (file) => {
-  if (file) {
-    // file path
-    const needed_file_path = `${images_folder}/${file}`;
+const convert_to_webp = async (file) => {
+  if (!file) return Promise.resolve();
 
-    // needed file name without format
-    const file_name = file.split(".")[0];
+  // file path
+  const needed_file_path = `${images_folder}/${file}`;
 
-    if (params.sizes?.length > 0) {
-      sharp(needed_file_path)
-        // https://sharp.pixelplumbing.com/api-output#webp
-        .webp(params.webp)
-        .toBuffer()
-        .then((data) => {
-          // prepare files for all sizes
-          params.sizes.forEach((size) => {
-            resize_image(data, file_name, "webp", +size);
-          });
+  // needed file name without format
+  const file_name = file.split(".")[0];
+
+  if (params.sizes?.length > 0) {
+    return sharp(needed_file_path)
+      // https://sharp.pixelplumbing.com/api-output#webp
+      .webp(params.webp)
+      .toBuffer()
+      .then((data) => {
+        // prepare files for all sizes
+        params.sizes.forEach(async (size) => {
+          await resize_image(data, file_name, "webp", +size);
         });
-    } else {
-      sharp(needed_file_path)
-        // https://sharp.pixelplumbing.com/api-output#webp
-        .webp(params.webp)
-        .toFile(`${final_folder}/webp/${file_name}-default.webp`);
-    }
+      });
+  } else {
+    return sharp(needed_file_path)
+      // https://sharp.pixelplumbing.com/api-output#webp
+      .webp(params.webp)
+      .toFile(`${final_folder}/webp/${file_name}-default.webp`);
   }
 };
 
@@ -91,28 +101,26 @@ const convert_to_webp = (file) => {
  *
  * @param {String} file   file name with format (like 'test.png')
  */
-const convert_to_avif = (file) => {
-  if (file) {
-    const needed_file_path = `${images_folder}/${file}`;
-    const file_name = file.split(".")[0];
+const convert_to_avif = async (file) => {
+  if (!file) return Promise.resolve();
 
-    if (params.sizes?.length > 0) {
-      sharp(needed_file_path)
-        // https://sharp.pixelplumbing.com/api-output#avif
-        .avif(params.avif)
-        .toBuffer()
-        .then((data) => {
-          // prepare files for all sizes
-          params.sizes.forEach((size) => {
-            resize_image(data, file_name, "avif", +size);
-          });
-        });
-    } else {
-      sharp(needed_file_path)
-        // https://sharp.pixelplumbing.com/api-output#avif
-        .avif(params.avif)
-        .toFile(`${final_folder}/avif/${file_name}-default.avif`);
-    }
+  const needed_file_path = `${images_folder}/${file}`;
+  const file_name = file.split(".")[0];
+
+  if (params.sizes?.length > 0) {
+    const data = await sharp(needed_file_path)
+      // https://sharp.pixelplumbing.com/api-output#avif
+      .avif(params.avif)
+      .toBuffer();
+    // prepare files for all sizes
+    params.sizes.forEach(async(size) => {
+      await resize_image(data, file_name, "avif", +size);
+    });
+  } else {
+    return sharp(needed_file_path)
+      // https://sharp.pixelplumbing.com/api-output#avif
+      .avif(params.avif)
+      .toFile(`${final_folder}/avif/${file_name}-default.avif`);
   }
 };
 
@@ -121,30 +129,30 @@ const convert_to_avif = (file) => {
  *
  * @param {String} file   file name with format (like 'test.png')
  */
-const convert_to_jpg = (file) => {
-  if (file) {
-    const needed_file_path = `${images_folder}/${file}`;
-    const file_name = file.split(".")[0];
+const convert_to_jpg = async (file) => {
+  if (!file) return Promise.resolve();
 
-    if (params.sizes?.length > 0) {
-      sharp(needed_file_path)
-        // https://sharp.pixelplumbing.com/api-operation#flatten
-        .flatten({ background: params.background })
-        // https://sharp.pixelplumbing.com/api-output#jpeg
-        .jpeg(params.jpg)
-        .toBuffer()
-        .then((data) => {
-          // prepare files for all sizes
-          params.sizes.forEach((size) => {
-            resize_image(data, file_name, "jpg", +size);
-          });
+  const needed_file_path = `${images_folder}/${file}`;
+  const file_name = file.split(".")[0];
+
+  if (params.sizes?.length > 0) {
+    return sharp(needed_file_path)
+      // https://sharp.pixelplumbing.com/api-operation#flatten
+      .flatten({ background: params.background })
+      // https://sharp.pixelplumbing.com/api-output#jpeg
+      .jpeg(params.jpg)
+      .toBuffer()
+      .then((data) => {
+        // prepare files for all sizes
+        params.sizes.forEach(async (size) => {
+          await resize_image(data, file_name, "jpg", +size);
         });
-    } else {
-      sharp(needed_file_path)
-        // https://sharp.pixelplumbing.com/api-output#jpeg
-        .jpeg(params.jpg)
-        .toFile(`${final_folder}/jpg/${file_name}-default.jpg`);
-    }
+      });
+  } else {
+    return sharp(needed_file_path)
+      // https://sharp.pixelplumbing.com/api-output#jpeg
+      .jpeg(params.jpg)
+      .toFile(`${final_folder}/jpg/${file_name}-default.jpg`);
   }
 };
 
@@ -162,10 +170,11 @@ const resize_image = (file, name, format, width) => {
       fs.mkdirSync(`${final_folder}/${name}`);
     }
 
-    sharp(file)
+    return sharp(file)
       .resize(width)
       .toFile(`${final_folder}/${name}/${width}.${format}`);
   } else {
     console.log("something missed in the `resize_image` func");
+    return Promise.resolve();
   }
 };
